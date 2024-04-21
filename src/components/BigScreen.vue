@@ -3,13 +3,13 @@
     <div class="header">智慧城市管理系统</div>
     <div class="main">
       <div class="left">
-        <div class="cityEvent">
+        <div class="cityEvent" v-for="(item, key) in props.dataInfo">
           <h3>
-            <span>治安事件</span>
+            <span>{{ item.name }}</span>
           </h3>
           <h1>
             <img src="../assets/bg/bar.svg" class="icon" />
-            <span>1000（台）</span>
+            <span>{{ toFixInt(item.number) }}（{{ item.unit }}）</span>
           </h1>
           <div class="footerBoder"></div>
         </div>
@@ -19,7 +19,13 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps(["dataInfo"]);
+
+const toFixInt = (num) => {
+  return num.toFixed(0);
+};
+</script>
 
 <style scoped>
 #bigScreen {
