@@ -5,6 +5,7 @@ import modifyCityMaterial from "../modify/modifyCityMaterial";
 import MeshLine from "./MeshLine";
 import LightWall from "./LightWall";
 import LightRadar from "./LightRadar";
+import AlarmSprite from "./AlarmSprite";
 import FlyLine from "./FlyLine";
 import FlyLineShader from "./FlyLineShader";
 
@@ -44,5 +45,13 @@ export default function createCity() {
     // 添加雷达
     const lightRadar = new LightRadar();
     scene.add(lightRadar.mesh);
+
+    // 添加警告标识
+    const alarmSprite = new AlarmSprite();
+    scene.add(alarmSprite.mesh);
+    alarmSprite.onClick(function (e) {
+      alert("警告");
+      console.log("警告", e);
+    });
   });
 }
