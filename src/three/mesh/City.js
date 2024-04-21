@@ -2,6 +2,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import * as THREE from "three";
 import scene from "../scene";
 import modifyCityMaterial from "../modify/modifyCityMaterial";
+import MeshLine from "./MeshLine";
 import FlyLine from "./FlyLine";
 import FlyLineShader from "./FlyLineShader";
 
@@ -15,13 +16,20 @@ export default function createCity() {
         });
         item.material = cityMaterial;
         modifyCityMaterial(item);
+
+        if (item.name == "Layerbuildings" ) {
+          const meshLine = new MeshLine(item.geometry);
+          const size = item.scale.x;
+          meshLine.mesh.scale.set(size, size, size);
+          scene.add(meshLine.mesh);
+        }
       }
     });
     scene.add(gltf.scene);
 
     // 添加飞线
     const flyLine = new FlyLine();
-    console.log(flyLine.mesh);
+
     scene.add(flyLine.mesh);
 
     // 添加着色器飞线
