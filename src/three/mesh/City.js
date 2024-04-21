@@ -3,6 +3,7 @@ import * as THREE from "three";
 import scene from "../scene";
 import modifyCityMaterial from "../modify/modifyCityMaterial";
 import MeshLine from "./MeshLine";
+import LightWall from "./LightWall";
 import FlyLine from "./FlyLine";
 import FlyLineShader from "./FlyLineShader";
 
@@ -17,7 +18,7 @@ export default function createCity() {
         item.material = cityMaterial;
         modifyCityMaterial(item);
 
-        if (item.name == "Layerbuildings" ) {
+        if (item.name == "Layerbuildings") {
           const meshLine = new MeshLine(item.geometry);
           const size = item.scale.x;
           meshLine.mesh.scale.set(size, size, size);
@@ -29,11 +30,14 @@ export default function createCity() {
 
     // 添加飞线
     const flyLine = new FlyLine();
-
     scene.add(flyLine.mesh);
 
     // 添加着色器飞线
     const flyLineShader = new FlyLineShader();
     scene.add(flyLineShader.mesh);
+
+    // 添加光墙
+    const lightWall = new LightWall();
+    scene.add(lightWall.mesh);
   });
 }
