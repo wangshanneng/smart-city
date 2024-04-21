@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Scene />
-    <BigScreen :dataInfo="dataInfo" />
+    <BigScreen :dataInfo="dataInfo" :eventList="eventList" />
   </div>
 </template>
 
@@ -21,6 +21,11 @@ const dataInfo = reactive({
 
 onMounted(async () => {
   changeInfo();
+  getEventList();
+  setInterval(() => {
+    changeInfo();
+    getEventList();
+  }, 10000);
 });
 
 const changeInfo = async () => {
@@ -33,5 +38,12 @@ const changeInfo = async () => {
       duration: 1,
     });
   }
+};
+
+const eventList = ref([]);
+const getEventList = async () => {
+  let result = await getSmartCityList();
+  eventList.value = result.data.list;
+  // console.log(result.data.list);
 };
 </script>

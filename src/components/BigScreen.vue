@@ -14,13 +14,36 @@
           <div class="footerBoder"></div>
         </div>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <div class="cityEvent list">
+          <h3>
+            <span>事件列表</span>
+          </h3>
+          <ul>
+            <li v-for="(item, i) in props.eventList">
+              <h1>
+                <div>
+                  <img class="icon" :src="imgs[item.name]" />
+                  <span> {{ item.name }} </span>
+                </div>
+                <span class="time"> {{ item.time }} </span>
+              </h1>
+              <p>{{ item.type }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-
+new URL('../assets/images/right.png', import.meta.url).href
 <script setup>
-const props = defineProps(["dataInfo"]);
+const props = defineProps(["dataInfo", "eventList"]);
+const imgs = {
+  电力: new URL("@/assets/bg/dianli.svg", import.meta.url).href,
+  火警: new URL("@/assets/bg/fire.svg", import.meta.url).href,
+  治安: new URL("@/assets/bg/jingcha.svg", import.meta.url).href,
+};
 
 const toFixInt = (num) => {
   return num.toFixed(0);
