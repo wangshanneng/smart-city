@@ -2,14 +2,25 @@ import * as THREE from "three";
 import camera from "../camera";
 
 export default class AlarmSprite {
-  constructor() {
+  constructor(type = "火警", position = { x: -1.8, z: 3 }, color = 0xffffff) {
     const textureLoader = new THREE.TextureLoader();
-    const map = textureLoader.load("./textures/warning.png");
-    this.material = new THREE.SpriteMaterial({ map: map });
+    const typeObj = {
+      火警: "./textures/tag/fire.png",
+      治安: "./textures/tag/jingcha.png",
+      电力: "./textures/tag/e.png",
+    };
+
+    const map = textureLoader.load(typeObj[type]);
+    this.material = new THREE.SpriteMaterial({
+      map: map,
+      color: color,
+      transparent: true,
+      depthTest: false,
+    });
     this.mesh = new THREE.Sprite(this.material);
 
     // 设置位置
-    this.mesh.position.set(-4.2, 3.5, -1);
+    this.mesh.position.set(position.x, 3.5, position.z);
 
     // 封装点击事件
     this.fns = [];
@@ -38,5 +49,12 @@ export default class AlarmSprite {
   }
   onClick(fn) {
     this.fns.push(fn);
+  }
+
+  remove() {
+    this.mesh.remove();
+    this.mesh.removeFromParent();
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
   }
 }

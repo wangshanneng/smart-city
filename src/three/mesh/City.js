@@ -31,27 +31,27 @@ export default function createCity() {
     scene.add(gltf.scene);
 
     // 添加飞线
-    const flyLine = new FlyLine();
-    scene.add(flyLine.mesh);
+    // const flyLine = new FlyLine();
+    // scene.add(flyLine.mesh);
 
     // 添加着色器飞线
-    const flyLineShader = new FlyLineShader();
-    scene.add(flyLineShader.mesh);
+    // const flyLineShader = new FlyLineShader();
+    // scene.add(flyLineShader.mesh);
 
     // 添加光墙
-    const lightWall = new LightWall();
-    scene.add(lightWall.mesh);
+    // const lightWall = new LightWall();
+    // scene.add(lightWall.mesh);
 
     // 添加雷达
-    const lightRadar = new LightRadar();
-    scene.add(lightRadar.mesh);
+    // const lightRadar = new LightRadar();
+    // scene.add(lightRadar.mesh);
 
     // 添加警告标识
-    const alarmSprite = new AlarmSprite();
-    scene.add(alarmSprite.mesh);
-    alarmSprite.onClick(function (e) {
-      alert("警告");
-      console.log("警告", e);
-    });
+    // const alarmSprite = new AlarmSprite();
+    // scene.add(alarmSprite.mesh);
+    // alarmSprite.onClick(function (e) {
+    //   alert("警告");
+    //   console.log("警告", e);
+    // });
   });
 }

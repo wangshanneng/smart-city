@@ -4,12 +4,12 @@ import vertex from "@/shader/flyLine/vertex.glsl?raw";
 import fragment from "@/shader/flyLine/fragment.glsl?raw";
 
 export default class FlyLineShader {
-  constructor() {
+  constructor(position = { x: 0, z: 0 }, color = 0x00ffff) {
     // 根据点生成曲线
     let linePoints = [
       new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(-5, 4, 0),
-      new THREE.Vector3(-10, 0, 0),
+      new THREE.Vector3(position.x / 2, 4, position.z / 2),
+      new THREE.Vector3(position.x, 0, position.z),
     ];
     // 创建曲线
     this.lineCurve = new THREE.CatmullRomCurve3(linePoints);
@@ -31,10 +31,10 @@ export default class FlyLineShader {
     this.shaderMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: {
-          value: 0.5,
+          value: 0,
         },
         uColor: {
-          value: new THREE.Color(0xffff00),
+          value: new THREE.Color(color),
         },
         uLength: {
           value: points.length,
@@ -56,5 +56,11 @@ export default class FlyLineShader {
       repeat: -1,
       ease: "none",
     });
+  }
+  remove() {
+    this.mesh.remove();
+    this.mesh.removeFromParent();
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
   }
 }

@@ -44,4 +44,11 @@ export default class LightWall {
       yoyo: true,
     });
   }
+
+  remove() {
+    this.mesh.remove();
+    this.mesh.removeFromParent();
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
+  }
 }

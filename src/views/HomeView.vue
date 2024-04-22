@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Scene />
+    <Scene :eventList="eventList"/>
     <BigScreen :dataInfo="dataInfo" :eventList="eventList" />
   </div>
 </template>

@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import * as THREE from "three";
 import gsap from "gsap";
 
@@ -26,7 +26,12 @@ import createMesh from "@/three/createMesh";
 
 // 导入每一帧的执行函数
 import animate from "@/three/animate";
+import AlarmSprite from "@/three/mesh/AlarmSprite";
+import LightWall from "@/three/mesh/LightWall";
+import FlyLineShader from "@/three/mesh/FlyLineShader";
+import LightRadar from "@/three/mesh/LightRadar";
 
+const props = defineProps(["eventList"]);
 // 场景元素div
 let sceneDiv = ref(null);
 
@@ -38,6 +43,50 @@ onMounted(() => {
   sceneDiv.value.appendChild(renderer.domElement);
   animate();
 });
+
+const eventListMesh = [];
+let mapFn = {
+  火警: (position, i) => {
+    const lightWall = new LightWall(1, 2, position);
+    scene.add(lightWall.mesh);
+    eventListMesh.push(lightWall);
+  },
+  治安: (position, i) => {
+    const color = new THREE.Color(
+      Math.random(),
+      Math.random(),
+      Math.random()
+    ).getHex();
+    const flyLineShader = new FlyLineShader(position, color);
+    scene.add(flyLineShader.mesh);
+    eventListMesh.push(flyLineShader);
+  },
+  电力: (position, i) => {
+    const lightRadar = new LightRadar(2, position);
+    scene.add(lightRadar.mesh);
+    eventListMesh.push(lightRadar);
+  },
+};
+watch(
+  () => props.eventList,
+  (val) => {
+    eventListMesh.forEach((item) => {
+      item.remove();
+    });
+    props.eventList.forEach((item, i) => {
+      const position = {
+        x: item.position.x / 5 - 10,
+        z: item.position.y / 5 - 10,
+      };
+      const alarmSprite = new AlarmSprite(item.name, position);
+      eventListMesh.push(alarmSprite);
+      scene.add(alarmSprite.mesh);
+      if (mapFn[item.name]) {
+        mapFn[item.name](position, i);
+      }
+    });
+  }
+);
 </script>
 
 <style>
