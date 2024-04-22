@@ -20,7 +20,6 @@ export default function modifyCityMaterial(mesh) {
 // 渐变效果
 export function addGradColor(shader, mesh) {
   mesh.geometry.computeBoundingBox();
-  //   console.log(mesh.geometry.boundingBox);
   const { min, max } = mesh.geometry.boundingBox;
   // 获取物体高度差
   const uHeight = max.y - min.y;

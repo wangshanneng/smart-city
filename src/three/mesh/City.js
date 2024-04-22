@@ -51,7 +51,6 @@ export default function createCity() {
     // scene.add(alarmSprite.mesh);
     // alarmSprite.onClick(function (e) {
     //   alert("警告");
-    //   console.log("警告", e);
     // });
   });
 }

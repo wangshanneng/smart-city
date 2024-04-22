@@ -30,6 +30,7 @@ import AlarmSprite from "@/three/mesh/AlarmSprite";
 import LightWall from "@/three/mesh/LightWall";
 import FlyLineShader from "@/three/mesh/FlyLineShader";
 import LightRadar from "@/three/mesh/LightRadar";
+import eventHub from "@/utils/eventHub";
 
 const props = defineProps(["eventList"]);
 // 场景元素div
@@ -48,6 +49,7 @@ const eventListMesh = [];
 let mapFn = {
   火警: (position, i) => {
     const lightWall = new LightWall(1, 2, position);
+    lightWall.eventListIndex = i;
     scene.add(lightWall.mesh);
     eventListMesh.push(lightWall);
   },
@@ -58,15 +60,39 @@ let mapFn = {
       Math.random()
     ).getHex();
     const flyLineShader = new FlyLineShader(position, color);
+    flyLineShader.eventListIndex = i;
     scene.add(flyLineShader.mesh);
     eventListMesh.push(flyLineShader);
   },
   电力: (position, i) => {
     const lightRadar = new LightRadar(2, position);
+    lightRadar.eventListIndex = i;
     scene.add(lightRadar.mesh);
     eventListMesh.push(lightRadar);
   },
 };
+
+eventHub.on("eventToggle", (i) => {
+  eventListMesh.forEach((item) => {
+    if (item.eventListIndex === i) {
+      item.mesh.visible = true;
+    } else {
+      item.mesh.visible = false;
+    }
+  });
+  const position = {
+    x: props.eventList[i].position.x / 5 - 10,
+    y: 0,
+    z: props.eventList[i].position.y / 5 - 10,
+  };
+  gsap.to(controls.target, {
+    duration: 1,
+    x: position.x,
+    y: position.y,
+    z: position.z,
+  });
+});
+
 watch(
   () => props.eventList,
   (val) => {
@@ -79,6 +105,9 @@ watch(
         z: item.position.y / 5 - 10,
       };
       const alarmSprite = new AlarmSprite(item.name, position);
+      alarmSprite.onClick(() => {
+        eventHub.emit("spriteClick", { event: item, i });
+      });
       eventListMesh.push(alarmSprite);
       scene.add(alarmSprite.mesh);
       if (mapFn[item.name]) {

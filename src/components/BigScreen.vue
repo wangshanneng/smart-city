@@ -20,7 +20,11 @@
             <span>事件列表</span>
           </h3>
           <ul>
-            <li v-for="(item, i) in props.eventList">
+            <li
+              v-for="(item, i) in props.eventList"
+              :class="{ active: currentActive == i }"
+              @click="toggleEvent(i)"
+            >
               <h1>
                 <div>
                   <img class="icon" :src="imgs[item.name]" />
@@ -36,8 +40,11 @@
     </div>
   </div>
 </template>
-new URL('../assets/images/right.png', import.meta.url).href
+
 <script setup>
+import { ref } from "vue";
+import eventHub from "@/utils/eventHub";
+
 const props = defineProps(["dataInfo", "eventList"]);
 const imgs = {
   电力: new URL("@/assets/bg/dianli.svg", import.meta.url).href,
@@ -47,6 +54,16 @@ const imgs = {
 
 const toFixInt = (num) => {
   return num.toFixed(0);
+};
+
+const currentActive = ref(null);
+eventHub.on("spriteClick", (data) => {
+  currentActive.value = data.i;
+});
+
+const toggleEvent = (i) => {
+  currentActive.value = i;
+  eventHub.emit("eventToggle", i);
 };
 </script>
 

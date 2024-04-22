@@ -44,6 +44,5 @@ const eventList = ref([]);
 const getEventList = async () => {
   let result = await getSmartCityList();
   eventList.value = result.data.list;
-  // console.log(result.data.list);
 };
 </script>
